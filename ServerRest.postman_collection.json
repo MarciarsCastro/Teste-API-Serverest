@@ -1,0 +1,532 @@
+{
+	"info": {
+		"_postman_id": "fc5f42d2-1a4a-49c7-8df5-f544c2562a0a",
+		"name": "ServerRest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Usuários",
+			"item": [
+				{
+					"name": "POST - Cadastrar usuário",
+					"item": [
+						{
+							"name": "Validar Cadastro com sucesso",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jasonData\r",
+											"var ambiente = JSON.parse(responseBody);\r",
+											"pm.environment.set(\"_id\", ambiente._id);\r",
+											"\r",
+											"pm.test('Validar status code igual a 201', function(){\r",
+											"    pm.response.to.have.status(201)\r",
+											"})\r",
+											"\r",
+											"pm.test('Validar retorno de mensagem', function(){\r",
+											"    jasonData = pm.response.json().message\r",
+											"    pm.expect(jasonData, \"mensagem\").to.eql(\"Cadastro realizado com sucesso\")\r",
+											"})\r",
+											"\r",
+											"pm.test('Validar retorno de client id', function(){\r",
+											"    jasonData = pm.response.json()._id\r",
+											"    pm.expect(jasonData, \"id não retornado\").not.undefined\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nome\": \"Iago Henrique\",\r\n  \"email\": \"Iago111@qa.com.br\",\r\n  \"password\": \"teste\",\r\n  \"administrador\": \"true\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{servidor}}",
+									"host": [
+										"{{servidor}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Validar Cadastro com email já cadastrado",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jasonData\r",
+											"\r",
+											"pm.test('Validar status code igual a 400', function(){\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"\r",
+											"pm.test('Validar retorno de mensagem', function(){\r",
+											"    jasonData = pm.response.json().message\r",
+											"    pm.expect(jasonData, \"mensagem\").to.eql(\"Este email já está sendo usado\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nome\": \"Iago Henrique\",\r\n  \"email\": \"Iago11@qa.com.br\",\r\n  \"password\": \"teste\",\r\n  \"administrador\": \"true\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{servidor}}",
+									"host": [
+										"{{servidor}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Validar Cadastro sem email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jasonData\r",
+											"\r",
+											"pm.test('Validar status code igual a 400', function(){\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"\r",
+											"pm.test('Validar retorno de mensagem', function(){\r",
+											"    jasonData = pm.response.json().email\r",
+											"    pm.expect(jasonData, \"mensagem\").to.eql(\"email é obrigatório\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"Fulano\",\r\n    \"password\": \"teste\",\r\n    \"administrador\": \"true\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{servidor}}",
+									"host": [
+										"{{servidor}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Validar Cadastro sem nome",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jasonData\r",
+											"\r",
+											"pm.test('Validar status code igual a 400', function(){\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"\r",
+											"pm.test('Validar retorno de mensagem', function(){\r",
+											"    jasonData = pm.response.json().nome\r",
+											"    pm.expect(jasonData, \"mensagem\").to.eql(\"nome é obrigatório\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"beltrano@qa.com.br\",\r\n    \"password\": \"teste\",\r\n    \"administrador\": \"true\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{servidor}}",
+									"host": [
+										"{{servidor}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Validar Cadastro sem senha",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jasonData\r",
+											"\r",
+											"pm.test('Validar status code igual a 400', function(){\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"\r",
+											"pm.test('Validar retorno de mensagem', function(){\r",
+											"    jasonData = pm.response.json().password\r",
+											"    pm.expect(jasonData, \"mensagem\").to.eql(\"password é obrigatório\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nome\": \"Ingrid Teste\",\r\n  \"email\": \"IngridTeste@qa.com.br\",\r\n  \"administrador\": \"true\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{servidor}}",
+									"host": [
+										"{{servidor}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Validar Cadastro sem adm",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jasonData\r",
+											"\r",
+											"pm.test('Validar status code igual a 400', function(){\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"\r",
+											"pm.test('Validar retorno de mensagem', function(){\r",
+											"    jasonData = pm.response.json().administrador\r",
+											"    pm.expect(jasonData, \"mensagem\").to.eql(\"administrador é obrigatório\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nome\": \"Ingrid Teste\",\r\n  \"email\": \"SabrinaTeste@qa.com.br\",\r\n  \"password\": \"teste\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{servidor}}",
+									"host": [
+										"{{servidor}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Validar Cadastro com campos diferentes do esperado",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jasonData\r",
+											"\r",
+											"pm.test('Validar status code igual a 400', function(){\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"\r",
+											"pm.test('Validar retorno de mensagem', function(){\r",
+											"    jasonData = pm.response.json().administrador\r",
+											"    pm.expect(jasonData, \"mensagem\").to.eql(\"administrador deve ser 'true' ou 'false'\")\r",
+											"})\r",
+											"\r",
+											"pm.test('Validar retorno de mensagem', function(){\r",
+											"    jasonData = pm.response.json().email\r",
+											"    pm.expect(jasonData, \"mensagem\").to.eql(\"email deve ser um email válido\")\r",
+											"})\r",
+											"\r",
+											"pm.test('Validar retorno de mensagem', function(){\r",
+											"    jasonData = pm.response.json().nome\r",
+											"    pm.expect(jasonData, \"mensagem\").to.eql(\"nome não pode ficar em branco\")\r",
+											"})\r",
+											"\r",
+											"pm.test('Validar retorno de mensagem', function(){\r",
+											"    jasonData = pm.response.json().password\r",
+											"    pm.expect(jasonData, \"mensagem\").to.eql(\"password não pode ficar em branco\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nome\": \"\",\r\n  \"email\": \"SabrinaTesteqa.com.br\",\r\n  \"password\": \"\",\r\n  \"administrador\": \"trueeee\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{servidor}}",
+									"host": [
+										"{{servidor}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET - Listar usuários cadstrados",
+					"item": [
+						{
+							"name": "Validar Listar usuários cadastrados por id por nome",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jasonData\r",
+											"\r",
+											"pm.test('Validar status code igual a 200', function(){\r",
+											"    pm.response.to.have.status(200)\r",
+											"})\r",
+											"\r",
+											"pm.test('Validar retorno de quantidade', function(){\r",
+											"    jasonData = pm.response.json().quantidade\r",
+											"    pm.expect(jasonData, \"mensagem\").not.undefined\r",
+											"})\r",
+											"\r",
+											"pm.test('Validar retorno de usuarios', function(){\r",
+											"    jasonData = pm.response.json().usuarios\r",
+											"    pm.expect(jasonData, \"mensagem\").not.undefined\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{servidor}}",
+									"host": [
+										"{{servidor}}"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "Iago11@qa.com.br",
+											"disabled": true
+										},
+										{
+											"key": "password",
+											"value": "teste",
+											"disabled": true
+										},
+										{
+											"key": "administrador",
+											"value": "true",
+											"disabled": true
+										},
+										{
+											"key": "nome",
+											"value": "Iago Henrique",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "DEL - Excluir usuário",
+					"item": [
+						{
+							"name": "Validar Delete de usuário",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Validar status code igual a 200', function(){\r",
+											"    pm.response.to.have.status(200)\r",
+											"})\r",
+											"\r",
+											"pm.test('Validar retorno de mensagem', function(){\r",
+											"    jasonData = pm.response.json().message\r",
+											"    pm.expect(jasonData, \"id não retornado\").to.eql(\"Registro excluído com sucesso\")\r",
+											"})\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{servidor}}{{id}}",
+									"host": [
+										"{{servidor}}{{id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Validar Delete de usuário sem usuario",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Validar status code igual a 200', function(){\r",
+											"    pm.response.to.have.status(200)\r",
+											"})\r",
+											"\r",
+											"pm.test('Validar retorno de mensagem', function(){\r",
+											"    jasonData = pm.response.json().message\r",
+											"    pm.expect(jasonData, \"id não retornado\").to.eql(\"Nenhum registro excluído\")\r",
+											"})\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{servidor}}{{id2}}",
+									"host": [
+										"{{servidor}}{{id2}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "PUT - Editar usuário",
+					"item": [
+						{
+							"name": "Validar cadastro de user por id com sucesso",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jasonData\r",
+											"var ambiente = JSON.parse(responseBody);\r",
+											"pm.environment.set(\"_id\", ambiente._id);\r",
+											"\r",
+											"pm.test('Validar status code igual a 200', function(){\r",
+											"    pm.response.to.have.status(200)\r",
+											"})\r",
+											"\r",
+											"pm.test('Validar retorno de mensagem', function(){\r",
+											"    jasonData = pm.response.json().message\r",
+											"    pm.expect(jasonData, \"mensagem\").to.eql(\"Registro alterado com sucesso\")\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"Iago Henrique\",\r\n    \"email\": \"Iago11123@qa.com.br\",\r\n    \"password\": \"teste\",\r\n    \"administrador\": \"true\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{servidor}}{{id4}}",
+									"host": [
+										"{{servidor}}{{id4}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
